@@ -1,0 +1,6 @@
+.vscode
+__notebook__.ipynb
+env
+.env
+./.env
+./env
