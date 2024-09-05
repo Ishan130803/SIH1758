@@ -1,0 +1,3 @@
+nohup: ignoring input
+ * Serving Flask app 'server_script'
+ * Debug mode: off
