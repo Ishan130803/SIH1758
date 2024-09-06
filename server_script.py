@@ -16,6 +16,7 @@ import os
 from py_olamaps.OlaMaps import OlaMaps
 from openai import OpenAI
 import subprocess
+from flask_cors import CORS
 
 
 load_dotenv('env')
@@ -262,11 +263,16 @@ class MMIServer:
         self.initialize_routes()
     
     def initialize_routes(self):
+        @self.app.route('/')
+        def hello():
+            return "hello"
+        
         @self.app.post('/api/v1/get-geocodes')
         def get_geocodes():
             address = urllib.parse.unquote(flask_request.args.get('address'))
             geocoded_data = self.mmi.get_geo_coded_data_with_coordinates(address=address)
             return geocoded_data
+        
         @self.app.post('/api/v1/get-coords')
         def get_post_office_coords():
             address = urllib.parse.unquote(flask_request.args.get('address'))
@@ -293,6 +299,20 @@ class MMIServer:
 def main():
     mmiServer = MMIServer(CLIENT_ID, CLIENT_SECRET)
     app = mmiServer.get_app()
+    url = 'https://loca.lt/mytunnelpassword'
+    response = requests.get(url)
+    for i in range(3):
+        if response.status_code == 200:
+            # Get the content of the response
+            content = response.text
+            print(f'Max tunnel password {content}')
+            break
+        else:
+            print(f"Failed to retrieve the content Retrying after two seconds. Status code: {response.status_code}")
+            time.sleep(10)
+    else:
+        raise Exception("Unable to fetch the tunnel password")
+    CORS(app, resources={r"/*": {"origins": "*"}}, methods=['GET', 'POST', 'PUT','DELETE','UPDATE','OPTIONS'],supports_credentials=True, )
     command = ['lt', '--port', str(PORT), '--subdomain', SUBDOMAIN]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     app.run(port = PORT)
