@@ -23,10 +23,10 @@ load_dotenv('env')
 CLIENT_ID = os.getenv('MAPPLS_CLIENT_ID')
 CLIENT_SECRET = os.getenv('MAPPLS_CLIENT_SECRET')
 SUBDOMAIN = "postmitra"
-PORT = 8001
+PORT = 8000
 
 class DUMMY_MODE:
-    FLAG=True
+    FLAG=False
     DUMMY_IMAGE_URL = "https://cdn.collectorbazar.com/products/india-postal-envelope-registered-letter-commerially-used-g18657-268009-1.jpg"
     DUMMY_RESPONSE = {
         "parsed_address": "Hindustan Lever Ltd., Express Building 1st Floor, Bahadur Shah Zafer Marg, P.O. Box. 7003,, NEW DELHI - 110002",
